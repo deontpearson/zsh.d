@@ -33,5 +33,6 @@ OPTIONAL ARGUMENTS
   pyenv virtualenv $python_version $env_name
   pyenv activate $env_name
   $(pyenv root)/versions/$env_name/bin/python -m pip install --upgrade pip
+  $(pyenv root)/versions/$env_name/bin/python -m pip install pip-tools
   pyenv local $env_name
 }
