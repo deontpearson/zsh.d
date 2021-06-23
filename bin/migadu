@@ -1,12 +1,13 @@
-#!/Users/deon.pearson/.pyenv/versions/python3/bin/python
+#!/Users/deon/.pyenv/versions/python3/bin/python
+
+import argparse
+import json
+import os
+import random
+from typing import Any
 
 import requests
 from requests.auth import HTTPBasicAuth
-import argparse
-import json
-from typing import Any
-import random
-import os
 
 TOKEN = os.getenv("MIGADU_TOKEN")
 USER = os.getenv("MIGADU_EMAIL")
