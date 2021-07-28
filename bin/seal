@@ -63,9 +63,6 @@ main() {
     literal_values+="--from-literal=$key='$value' "
   done
 
-  USERNAME='sls-db'
-  PASSWORD='rainbow-unicorn'
-
   kubectl create --dry-run=client --output=yaml secret generic $secret_name \
     --namespace=$namespace \
     $literal_values \
