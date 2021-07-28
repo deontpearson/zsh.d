@@ -11,6 +11,7 @@ USAGE:
 
 OPTIONAL ARGUMENTS
       -c cert path      the path to a valid kubeseal certififate
+      -o output file     path to output file (default ./sealed-secret.yaml)
       -h                show usage
 EOF
 }
@@ -24,10 +25,11 @@ main() {
 
   local literal_values="" out_file=sealed-secret.yaml secret_name namespace kubeseal_cert
 
-  while getopts ":c:h" opt; do
+  while getopts ":c:o:h" opt; do
     case $opt in
     h) usage && exit 1 ;;
     c) kubeseal_cert="$OPTARG" ;;
+    o) out_file="$OPTARG" ;;
     *) usage && exit 1 ;;
     esac
   done
