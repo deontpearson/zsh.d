@@ -22,10 +22,7 @@ exit_err() {
 
 main() {
 
-
-  echo "Creating sealed secret"
-
-  local literal_values="" secret_name namespace kubeseal_cert
+  local literal_values="" out_file=sealed-secret.yaml secret_name namespace kubeseal_cert
 
   while getopts ":c:h" opt; do
     case $opt in
@@ -37,7 +34,7 @@ main() {
   shift $((OPTIND - 1))
 
   if [[ -z "${kubeseal_cert}" ]]; then
-    echo "cert path is required"
+    echo "Certificate path is required"
     exit 1
   fi
 
@@ -66,7 +63,9 @@ main() {
   kubectl create --dry-run=client --output=yaml secret generic $secret_name \
     --namespace=$namespace \
     $literal_values \
-    | kubeseal --cert $kubeseal_cert --format yaml > sealed-secret.yaml
+    | kubeseal --cert $kubeseal_cert --format yaml > $out_file
+
+  echo "SealedSecret written to $out_file"
 }
 
 main "$@"
