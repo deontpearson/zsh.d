@@ -59,7 +59,7 @@ main() {
     fi
     read -p "Enter value for $key: " value
     echo "captured $key:$value"
-    literal_values+="--from-literal=$key='$value' "
+    literal_values+="--from-literal=$key=$value "
   done
 
   kubectl create --dry-run=client --output=yaml secret generic $secret_name \
