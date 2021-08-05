@@ -11,7 +11,7 @@ USAGE:
 
 OPTIONAL ARGUMENTS
       -c cert path      the path to a valid kubeseal certififate
-      -o output file     path to output file (default ./sealed-secret.yaml)
+      -o output file     path to output file
       -h                show usage
 EOF
 }
@@ -23,7 +23,7 @@ exit_err() {
 
 main() {
 
-  local literal_values="" out_file=sealed-secret.yaml secret_name namespace kubeseal_cert
+  local literal_values="" out_file secret_name namespace kubeseal_cert
 
   while getopts ":c:o:h" opt; do
     case $opt in
@@ -62,12 +62,19 @@ main() {
     literal_values+="--from-literal=$key=$value "
   done
 
-  kubectl create --dry-run=client --output=yaml secret generic $secret_name \
+  if [[ -z "${out_file}" ]]; then
+    echo ""
+    kubectl create --dry-run=client --output=yaml secret generic $secret_name \
+    --namespace=$namespace \
+    $literal_values \
+    | kubeseal --cert $kubeseal_cert --format yaml
+  else
+    kubectl create --dry-run=client --output=yaml secret generic $secret_name \
     --namespace=$namespace \
     $literal_values \
     | kubeseal --cert $kubeseal_cert --format yaml > $out_file
-
-  echo "SealedSecret written to $out_file"
+    echo "SealedSecret written to $out_file"
+  fi
 }
 
 main "$@"
