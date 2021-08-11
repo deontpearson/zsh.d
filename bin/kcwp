@@ -38,7 +38,7 @@ main() {
 
   local context grep_input all_namespaces cmd namespace watch=false
 
-  while getopts ":c:n:g:wah" opt; do
+  while getopts ":c:n:g:ah" opt; do
     case $opt in
     h) usage && exit 1 ;;
     c) context="$OPTARG" ;;
