@@ -12,3 +12,5 @@ alias kcl='kubectl --context minikube'
 alias kcevict='kubectl --context docker-desktop get pod --all-namespaces --field-selector 'status.phase!=Running' -o json | kubectl delete -f -'
 #---------------------------------------------------------------------------------------------------
 alias sternl='stern --context minikube'
+#---------------------------------------------------------------------------------------------------
+alias helml='helm --kube-context minikube'

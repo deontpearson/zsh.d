@@ -54,3 +54,9 @@ function update-workspace() {
   done
   cd ~/workspace
 }
+
+
+function dockerm() {
+  eval $(minikube docker-env)
+  docker $@
+}
