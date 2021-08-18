@@ -16,7 +16,7 @@ OPTIONAL ARGUMENTS
     echo 'Cleaning branches'
     read -s -k '?Press any key to continue....'
     echo
-    git branch | grep -v 'master' | xargs git branch -D
+    git branch | grep -v $(git_man_branch) | xargs git branch -D
     ;;
   'list') git branch --sort=-committerdate | head ;;
   *) echo $usage ;;
