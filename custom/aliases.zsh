@@ -5,7 +5,7 @@ alias tm='tmuxinator '
 alias lg='ls -lAh | grep '
 #---------------------------------------------------------------------------------------------------
 alias jumpbox='ssh jumpbox'
-alias bastion='ssh bastion'
+alias bastion-production='ssh bastion-production'
 #---------------------------------------------------------------------------------------------------
 alias kc='kubectl'
 alias kcl='kubectl --context minikube'
