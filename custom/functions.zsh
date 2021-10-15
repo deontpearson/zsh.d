@@ -46,7 +46,7 @@ function update-workspace() {
       echo
       cd $f
       git checkout $(git_main_branch)
-      git pull --rebase
+      git pull --rebase --prune
       git fetch -t
       git stash clear
       echo

@@ -6,6 +6,7 @@ alias lg='ls -lAh | grep '
 #---------------------------------------------------------------------------------------------------
 alias jumpbox='ssh jumpbox'
 alias bastion-production='ssh bastion-production'
+alias bastion-staging='ssh bastion-staging'
 #---------------------------------------------------------------------------------------------------
 alias kc='kubectl'
 alias kcl='kubectl --context minikube'
