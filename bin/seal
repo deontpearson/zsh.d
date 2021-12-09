@@ -5,14 +5,22 @@ IFS=$'\n\t '
 
 usage() {
   cat <<EOF
-creates a sealed secret
-USAGE:
-  seal <arguments>
+DESCRIPTION
+    Creates a sealed secret from key:value prompts. The key:value prompts will continue until an empty key is provided. After which, the sealed secret will be created.
+
+USAGE
+    seal <arguments>
 
 OPTIONAL ARGUMENTS
-      -c cert path      the path to a valid kubeseal certififate
-      -o output file     path to output file
-      -h                show usage
+    -c cert path      the path to a valid kubeseal certififate
+    -o output file     path to output file
+    -h                show usage
+
+INPUTS
+    secret_name       the name of the sealed secret (e.g. my-secret)
+    namespace         the namespace the sealed secret is deployed to (e.g. kube-syste)
+    key               the key value pair to add to the secret data (e.g. password)
+    value             a plain text secret value for the key (e.g. mysupersecretpassword)
 EOF
 }
 
