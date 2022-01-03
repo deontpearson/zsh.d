@@ -33,15 +33,26 @@ parser.add_argument(
     "-s", "--show", default=False, action="store_true", help="show the resource"
 )
 parser.add_argument("--domain", type=str, help="the domain to work on")
+parser.add_argument(
+    "--recipients", type=str, help="comma separated list of recipients, e.g (foo,bar)"
+)
 
 args = parser.parse_args()
 
 
-def aliases(domain: str, args: Any):
+def aliases(domain: str, recipients: str, args: Any):
     if args.create:
         alias = input("Enter the alias to create> ").lower()
 
-        data = {"local_part": alias, "destinations": [f"deon@{domain}"]}
+        data = {
+            "local_part": alias,
+            "destinations": ",".join(
+                [
+                    f"{recipient.strip()}@{domain}"
+                    for recipient in recipients.split(",") or "deon"
+                ]
+            ),
+        }
 
         response = requests.post(
             f"{API}/domains/{domain}/aliases",
@@ -108,6 +119,6 @@ def identities(domain: str, args: Any):
 
 args = parser.parse_args()
 if args.resource == "aliases":
-    aliases(domain=args.domain, args=args)
+    aliases(domain=args.domain, recipients=args.recipients, args=args)
 if args.resource == "identities":
     identities(domain=args.domain, args=args)
