@@ -34,7 +34,7 @@ PROMPT='
 $(prompt_virtualenv)%{$fg_bold[green]%}%~%{$reset_color%}$(hg_prompt_info)$(git_prompt_info)
 %(?,,%{${fg_bold[white]}%}[%?]%{$reset_color%} )$ '
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" (%{$fg[magenta]%}branch: "
+ZSH_THEME_GIT_PROMPT_PREFIX=" (%{$fg[yellow]%}branch: "
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[red]%}?"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[orange]%}!"
