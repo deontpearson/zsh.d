@@ -4,7 +4,8 @@ alias tm='tmuxinator '
 #---------------------------------------------------------------------------------------------------
 alias lg='ls -lAh | grep '
 #---------------------------------------------------------------------------------------------------
-alias jumpbox='ssh jumpbox'
+alias jumpbox-production='ssh jumpbox-production'
+alias jumpbox-staging='ssh jumpbox-staging'
 alias bastion-production='ssh bastion-production'
 alias bastion-staging='ssh bastion-staging'
 #---------------------------------------------------------------------------------------------------
