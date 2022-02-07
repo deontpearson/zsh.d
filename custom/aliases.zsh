@@ -19,3 +19,6 @@ alias ksl='kubeseal --context minikube'
 alias sternl='stern --context minikube'
 #---------------------------------------------------------------------------------------------------
 alias helml='helm --kube-context minikube'
+#---------------------------------------------------------------------------------------------------
+alias gppr='git pull --prune --rebase'
+alias gprm='git pull --rebase origin $(git_main_branch)'
