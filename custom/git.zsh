@@ -1,5 +1,3 @@
-alias git-personal='git config user.email "deon@deonpearson.com" && git config user.name "Deon Pearson"'
-
 function git-branches() {
   usage="USAGE
   git-branches <command> <argument>
