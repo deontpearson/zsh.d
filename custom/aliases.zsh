@@ -22,3 +22,5 @@ alias helml='helm --kube-context minikube'
 #---------------------------------------------------------------------------------------------------
 alias gppr='git pull --prune --rebase'
 alias gprm='git pull --rebase origin $(git_main_branch)'
+#---------------------------------------------------------------------------------------------------
+alias scurl='curl -s '
