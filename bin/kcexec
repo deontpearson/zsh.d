@@ -7,7 +7,7 @@ usage() {
   cat <<EOF
 exec onto the first pod in the list that is returned
 USAGE:
-  kexec <arguments> <commands>
+  kcexec <arguments> <commands>
 
 OPTIONAL ARGUMENTS
       -n namespace      the namespace to use, default to default
