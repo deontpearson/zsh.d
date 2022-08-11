@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+IFS=$'\n\t '
+
+usage() {
+  cat <<EOF
+get all resources running in kubernetes contexts
+usage:
+  kcga <arguments>
+
+OPTIONAL ARGUMENTS
+      -n namespace      the namespace to use, default to default
+      -w                watch the command
+      -a                toggle --all-namespaces flag
+      -h                show usage
+EOF
+}
+
+exit_err() {
+  echo >&2 "${1}"
+  exit 1
+}
+
+get_contexts() {
+  $KUBECTL config get-contexts -o=name | sort -n
+}
+
+main() {
+  if hash kubectl 2>/dev/null; then
+    KUBECTL=kubectl
+  elif hash kubectl.exe 2>/dev/null; then
+    KUBECTL=kubectl.exe
+  else
+    echo >&2 "kubectl is not installed"
+    exit 1
+  fi
+
+  local context all_namespaces cmd namespace watch=false
+
+  while getopts ":c:n:wah" opt; do
+    case $opt in
+    h) usage && exit 1 ;;
+    c) context="$OPTARG" ;;
+    n) namespace="-n $OPTARG" ;;
+    w) watch=true ;;
+    a) all_namespaces="--all-namespaces" ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  if [[ -z "${context}" ]]; then
+    set -u pipefail
+    local ctx_list ctx_index ctx_array=() count=0
+
+    ctx_list=$(get_contexts) || exit_err "error getting context list"
+
+    for i in $ctx_list; do
+      if [[ "${i}" != "dummy" ]] && [[ "${i}" != "docker-for-desktop" ]]; then
+        echo "$count) ${i}"
+        count=$(expr $count + 1)
+        ctx_array+=("$i")
+      fi
+    done
+
+    read -p'choose context> ' ctx_index
+    context="${ctx_array[$ctx_index]}"
+  fi
+
+  cmd="$KUBECTL --context $context $namespace get all $all_namespaces"
+  case $watch in
+  true) watch $cmd ;;
+  false) eval $cmd ;;
+  *) echo "ERROR: Command Invalid\n$cmd\n" ;;
+  esac
+}
+
+main "$@"

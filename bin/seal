@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+IFS=$'\n\t '
+
+usage() {
+  cat <<EOF
+DESCRIPTION
+    Creates a sealed secret from key:value prompts. The key:value prompts will continue until an empty key is provided. After which, the sealed secret will be created.
+
+USAGE
+    seal <arguments>
+
+OPTIONAL ARGUMENTS
+    -c cert path      the path to a valid kubeseal certififate
+    -o output file     path to output file
+    -h                show usage
+
+INPUTS
+    secret_name       the name of the sealed secret (e.g. my-secret)
+    namespace         the namespace the sealed secret is deployed to (e.g. kube-syste)
+    key               the key value pair to add to the secret data (e.g. password)
+    value             a plain text secret value for the key (e.g. mysupersecretpassword)
+EOF
+}
+
+exit_err() {
+  echo >&2 "${1}"
+  exit 1
+}
+
+main() {
+
+  local literal_values="" out_file secret_name namespace kubeseal_cert
+
+  while getopts ":c:o:h" opt; do
+    case $opt in
+    h) usage && exit 1 ;;
+    c) kubeseal_cert="$OPTARG" ;;
+    o) out_file="$OPTARG" ;;
+    *) usage && exit 1 ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  if [[ -z "${kubeseal_cert}" ]]; then
+    echo "Certificate path is required"
+    exit 1
+  fi
+
+  if [ ! -f "$kubeseal_cert" ]; then
+    echo "$kubeseal_cert does not exist."
+    exit 1
+  fi
+
+  read -p "Enter secret_name: " secret_name
+  echo "secret_name:$secret_name"
+
+  read -p "Enter namespace: " namespace
+  echo "namespace:$namespace"
+
+  while read -p "Enter key value: " key
+  do
+    if [[ -z $key ]]
+    then
+      break
+    fi
+    read -p "Enter value for $key: " value
+    echo "captured $key:$value"
+    literal_values+="--from-literal=$key=$value "
+  done
+
+  if [[ -z "${out_file}" ]]; then
+    echo ""
+    kubectl create --dry-run=client --output=yaml secret generic $secret_name \
+    --namespace=$namespace \
+    $literal_values \
+    | kubeseal --cert $kubeseal_cert --format yaml
+  else
+    kubectl create --dry-run=client --output=yaml secret generic $secret_name \
+    --namespace=$namespace \
+    $literal_values \
+    | kubeseal --cert $kubeseal_cert --format yaml > $out_file
+    echo "SealedSecret written to $out_file"
+  fi
+}
+
+main "$@"
