@@ -2,6 +2,7 @@ export PYTHON_3_11_VERSION=3.11.1
 export PYTHON_3_10_VERSION=3.10.9
 export PYTHON_3_9_VERSION=3.9.16
 export PYTHON_3_8_VERSION=3.8.16
+export PYTHON_3_7_VERSION=3.7.16
 
 function pyenv-create() {
   usage="USAGE
