@@ -4,9 +4,10 @@ import argparse
 import json
 import os
 import random
-from typing import Any
+from typing import Any, Dict
 
 import requests
+from requests import Response
 from requests.auth import HTTPBasicAuth
 
 TOKEN = os.getenv("MIGADU_TOKEN")
@@ -40,81 +41,76 @@ parser.add_argument(
 args = parser.parse_args()
 
 
+def _post(url: str, data: Dict[str, Any]) -> Response:
+    return requests.post(url=url, auth=HTTPBasicAuth(USER, TOKEN), data=data)
+
+
+def _delete(url: str) -> Response:
+    response = requests.post(url=url, auth=HTTPBasicAuth(USER, TOKEN))
+    if response.status_code == 200:
+        print("Done")
+    else:
+        print(json.dumps(response.json(), indent=True))
+
+
+def _get(url: str) -> Response:
+    return requests.post(url=url, auth=HTTPBasicAuth(USER, TOKEN))
+
+
 def aliases(domain: str, recipients: str, args: Any):
     if args.create:
         alias = input("Enter the alias to create> ").lower()
 
-        data = {
-            "local_part": alias,
-            "destinations": ",".join(
-                [
-                    f"{recipient.strip()}@{domain}"
-                    for recipient in recipients.split(",") or "deon"
-                ]
-            ),
-        }
-
-        response = requests.post(
-            f"{API}/domains/{domain}/aliases",
-            auth=HTTPBasicAuth(USER, TOKEN),
-            data=data,
+        response = _post(
+            url=f"{API}/domains/{domain}/aliases",
+            data={
+                "local_part": alias,
+                "destinations": ",".join(
+                    [
+                        f"{recipient.strip()}@{domain}"
+                        for recipient in recipients.split(",") or "deon"
+                    ]
+                ),
+            },
         )
-
         print(json.dumps(response.json(), indent=True))
     elif args.delete:
-        alias = input("Enter the alias to delete> ").lower()
-        response = requests.delete(
-            f"{API}/domains/{domain}/aliases/{alias}",
-            auth=HTTPBasicAuth(USER, TOKEN),
-        )
-
-        if response.status_code == 200:
-            print("Done")
-        else:
-            print(json.dumps(response.json(), indent=True))
+        while True:
+            alias = input("Enter the alias to delete> ").lower()
+            if not alias:
+                break
+            _delete(f"{API}/domains/{domain}/aliases/{alias}")
     elif args.show:
-        response = requests.get(
-            f"{API}/domains/{domain}/aliases",
-            auth=HTTPBasicAuth(USER, TOKEN),
-        )
-        print(json.dumps(response.json(), indent=True))
+        print(json.dumps(_get(f"{API}/domains/{domain}/aliases").json(), indent=True))
 
 
 def identities(domain: str, args: Any):
     mailbox = "deon"
     if args.create:
         identity = input("Enter the identity to create> ").lower()
-
-        data = {
-            "name": identity.capitalize(),
-            "local_part": identity,
-            "password": "%032x" % random.getrandbits(128),
-        }
-
-        response = requests.post(
+        response = _post(
             f"{API}/domains/{domain}/mailboxes/{mailbox}/identities",
-            auth=HTTPBasicAuth(USER, TOKEN),
-            data=data,
+            data={
+                "name": identity.capitalize(),
+                "local_part": identity,
+                "password": "%032x" % random.getrandbits(128),
+            },
         )
 
         print(json.dumps(response.json(), indent=True))
     elif args.delete:
-        identity = input("Enter the identity to delete> ").lower()
-        response = requests.delete(
-            f"{API}/domains/{domain}/mailboxes/{mailbox}/identities/{identity}",
-            auth=HTTPBasicAuth(USER, TOKEN),
-        )
-
-        if response.status_code == 200:
-            print("Done")
-        else:
-            print(json.dumps(response.json(), indent=True))
+        while True:
+            identity = input("Enter the identity to delete> ").lower()
+            if not identity:
+                break
+            _delete(f"{API}/domains/{domain}/mailboxes/{mailbox}/identities/{identity}")
     elif args.show:
-        response = requests.get(
-            f"{API}/domains/{domain}/mailboxes/{mailbox}/identities",
-            auth=HTTPBasicAuth(USER, TOKEN),
+        print(
+            json.dumps(
+                _get(f"{API}/domains/{domain}/mailboxes/{mailbox}/identities").json(),
+                indent=True,
+            )
         )
-        print(json.dumps(response.json(), indent=True))
 
 
 args = parser.parse_args()
