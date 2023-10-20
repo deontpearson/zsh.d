@@ -3,7 +3,7 @@ function pyenv-create() {
   pyenv-create <arguments>
 
 OPTIONAL ARGUMENTS
-  -v version    the python version to use, default $PYENV_DEFAULT_PYTHON
+  -v version    the python version to use
   -n name       the name of the virtual environment, default is the folder name
   -h            help about the command
 "
@@ -18,7 +18,7 @@ OPTIONAL ARGUMENTS
     esac
   done
 
-  python_latest=$(pyenv install --list | awk '{ print $1 }' | grep ^$PYTHON_VERSION | sort -V | tail -n 1)
+  python_latest=$(pyenv install --list | awk '{ print $1 }' | grep ^$python_version | sort -V | tail -n 1)
   echo "installing $python_latest"
   pyenv install $python_latest --skip-existing
 
@@ -26,7 +26,7 @@ OPTIONAL ARGUMENTS
     echo $usage && return 1
   fi
 
-  pyenv virtualenv $python_version $env_name
+  pyenv virtualenv $python_latest $env_name
   pyenv activate $env_name
   pyenv local $env_name
 }
