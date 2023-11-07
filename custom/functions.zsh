@@ -1,10 +1,11 @@
 function cdw() { cd ~/workspace/$1; }
 function wcode() {
+  _pwd=$(pwd)
   cd ~/workspace/$1
   pyenv activate
   code .
   pyenv deactivate
-  cd ~/workspace
+  cd $_pwd
 }
 
 function cdl() {
