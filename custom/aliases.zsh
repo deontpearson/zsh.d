@@ -24,4 +24,4 @@ alias gppr='git pull --prune --rebase'
 alias gprm='git pull --rebase origin $(git_main_branch)'
 #---------------------------------------------------------------------------------------------------
 alias scurl='curl -s '
-alias jiramaker='python ~/workspace/uxi-tools/jiramaker/jiramaker.py'
+alias jiramaker='python ~/workspace/uxi-tools/jiramaker'
