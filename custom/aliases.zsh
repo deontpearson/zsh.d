@@ -16,12 +16,5 @@ alias kcevict='kubectl --context docker-desktop get pod --all-namespaces --field
 alias ks='kubeseal'
 alias ksl='kubeseal --context minikube'
 #---------------------------------------------------------------------------------------------------
-alias sternl='stern --context minikube'
-#---------------------------------------------------------------------------------------------------
-alias helml='helm --kube-context minikube'
-#---------------------------------------------------------------------------------------------------
-alias gppr='git pull --prune --rebase'
-alias gprm='git pull --rebase origin $(git_main_branch)'
-#---------------------------------------------------------------------------------------------------
 alias scurl='curl -s '
 alias jiramaker='python ~/workspace/uxi-tools/jiramaker'
