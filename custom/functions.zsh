@@ -29,3 +29,17 @@ function dockerm() {
   eval $(minikube docker-env)
   docker $@
 }
+
+
+function deep-clean() {
+    rm -rf build dist wheels *.egg-info
+	rm -rf */build */dist
+	find . -path '*/__pycache__/*' -delete
+	find . -type d -name '__pycache__' -empty -delete
+	rm -rf '.mypy_cache'
+	rm -rf '.pytest_cache'
+	rm -rf '.coverage'
+	rm -f '.coverage.*'
+	rm -rf '.import_linter_cache'
+	rm -rf '.ipynb_checkpoints'
+}
