@@ -2,8 +2,6 @@ alias watch='watch '
 #---------------------------------------------------------------------------------------------------
 alias tm='tmuxinator '
 #---------------------------------------------------------------------------------------------------
-alias lg='ls -lAh | grep '
-#---------------------------------------------------------------------------------------------------
 alias jumpbox-production='ssh jumpbox-production'
 alias bastion-production='ssh bastion-production'
 #---------------------------------------------------------------------------------------------------
@@ -14,5 +12,4 @@ alias kcevict='kubectl --context docker-desktop get pod --all-namespaces --field
 alias ks='kubeseal'
 alias ksl='kubeseal --context minikube'
 #---------------------------------------------------------------------------------------------------
-alias scurl='curl -s '
 alias jiramaker='python ~/workspace/uxi-tools/jiramaker'

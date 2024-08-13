@@ -7,6 +7,14 @@ function wcode() {
   pyenv deactivate
   cd $_pwd
 }
+function wzed() {
+  _pwd=$(pwd)
+  cd ~/workspace/$1
+  pyenv activate
+  zed .
+  pyenv deactivate
+  cd $_pwd
+}
 
 function update-workspace() {
   for f in ~/workspace/*; do
