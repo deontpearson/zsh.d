@@ -1,0 +1,30 @@
+#!/Users/deon/.pyenv/versions/python3/bin/python
+
+import argparse
+import csv
+import textwrap
+
+parser = argparse.ArgumentParser(description="Summaries a Star Point recognition report for a team member")
+parser.add_argument("-f", "--file", nargs="?", help="CSV file to summarise")
+args = parser.parse_args()
+
+args = parser.parse_args()
+file = args.file
+
+with open(file, mode="r", newline="\n", encoding="utf-8") as file:
+    # Create a CSV reader object
+    reader = csv.DictReader(file)
+    
+    # Loop through each row in the CSV
+    for row in reader:
+        name = row.get("Recipient First Name", "Unknown")
+        given_by = row.get("Giver Email", "Unknown")
+        comment = row.get("Submitter Comments", "No comment provided")
+
+        wrapped_comment = textwrap.wrap(comment, width=50)
+        
+        # Print the formatted output
+        print(f"\033[31m{given_by}\033[0m:")
+
+        for line in wrapped_comment:
+            print(f"\t{line}")
